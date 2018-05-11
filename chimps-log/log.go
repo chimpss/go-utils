@@ -2,11 +2,12 @@ package chimps_log
 
 import (
 	"fmt"
-	"runtime"
 	"os"
+	"runtime"
+	"strings"
+
+	"github.com/chimpss/go-utils/chimps-math"
 )
-
-
 
 const (
 	Red    = "\033[31m"
@@ -47,22 +48,23 @@ func PrintfDefault(format string, vals ...interface{}) {
 	fmt.Printf("\033[0m")
 }
 
-func Info(vals ...interface{})  {
+func Info(vals ...interface{}) {
 	_, file, line, _ := runtime.Caller(1)
-	fmt.Printf("[%s:%d]  ", file, line)
+	names := strings.Split(file, "/")
+	fmt.Printf("[%s:%d]  ", names[chimps_math.Max(0, len(names)-1)], line)
 	PrintlnColorful(Yellow, vals...)
 }
 
-func Error(vals ...interface{})  {
+func Error(vals ...interface{}) {
 	_, file, line, _ := runtime.Caller(1)
 	fmt.Printf("[%s:%d]  ", file, line)
 	PrintlnColorful(Red, vals...)
 }
 
-func Check(label string,err error)  {
-	if err != nil{
-		Error(label," failed,",err)
+func Check(label string, err error) {
+	if err != nil {
+		Error(label, " failed,", err)
 		os.Exit(1)
 	}
-	Info(label," ok")
+	Info(label, " ok")
 }

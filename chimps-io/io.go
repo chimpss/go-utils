@@ -3,10 +3,9 @@ package chimps_io
 import (
 	"bufio"
 	"io"
-	"os"
 )
 
-func ReadLine(f *os.File, readLine func(content string)) {
+func ReadLine(f io.Reader, readLine func(content string)) {
 	br := bufio.NewReader(f)
 	for {
 		a, _, c := br.ReadLine()
@@ -16,4 +15,3 @@ func ReadLine(f *os.File, readLine func(content string)) {
 		readLine(string(a))
 	}
 }
-
